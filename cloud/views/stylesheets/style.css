@@ -1,0 +1,32 @@
+body {
+  padding: 50px;
+  font: 14px 'HelveticaNeue', "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: white;
+  background: url(../images/background-rainbow.png) no-repeat center center fixed;
+  background-size: 100% 100%;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.navbar {
+	background: none;
+	border: none;
+}
+
+ul.nav li a, ul.nav li a:visited {
+    color: white !important;
+}
+
+ul.nav li a:hover, ul.nav li a:active {
+    color: white !important;
+}
+
+ul.nav li.active a {
+    color: white !important;
+}
+
+a.navbar-brand {
+	color: white !important;
+}

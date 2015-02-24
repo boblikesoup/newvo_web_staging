@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "NewVo_Staging": {
+            "applicationId": "Q18jrhbRAM2DElR8yiRXyEbPGHM9RTEWA0zu2Gyq",
+            "masterKey": "lJDe8MlNFcqjjFKcNWPrjudaDhM3iMw1NjV1EpJf"
+        },
+        "_default": {
+            "link": "NewVo_Staging"
+        }
+    },
+    "global": {
+        "parseVersion": "1.2.18"
+    }
+}
