@@ -1,12 +1,9 @@
-require('cloud/app.js');
+require('cloud/controllers/app.js');
 
 // To Do's:
 // Get controllers working
 // Modify routes/API
 // Set get '/' to visit cloud/views/index.jade instead of public/index.html
-
-// require('cloud/main')
-// require('cloud/controllers/main')
 
 // These two lines are required to initialize Express in Cloud Code.
 var express = require('express');
@@ -26,10 +23,6 @@ app.get('/', function(req, res) {
 // Renders cloud/views/index.jade
 app.get('/hello', function(req, res) {
     res.render('index');
-});
-
-Parse.Cloud.define("hello", function(request, response) {
-  response.success("Hello world!");
 });
 
 // Attach the Express app to Cloud Code.
