@@ -1,5 +1,6 @@
 require('cloud/controllers/voting.js');
 require('cloud/controllers/flagging.js');
+require('cloud/controllers/suggestions.js');
 
 // Test if API is working
 // Parse.Cloud.define("hello", function(request, response) {
@@ -321,31 +322,6 @@ Parse.Cloud.afterSave("Suggestion", function(request) {
     }
   });
 });
-
-
-
-
-
-Parse.Cloud.define("deleteComment", function(request, response) {
-  Parse.Cloud.useMasterKey();
-  var commentId=request.params.commentId;
-  var Suggestion = Parse.Object.extend("Suggestion");
-  var query = new Parse.Query(Suggestion);
-
-  query.get(commentId, {
-    success: function(postObject) {
-      postObject.set("status", 1);
-      postObject.save();
-      response.success("comment deleted");
-    },
-    error: function(object, error) {
-      response.error("comment not deleted");
-    }
-  });
-
-});
-
-
 
 
 Parse.Cloud.define("deletePost", function(request, response) {
