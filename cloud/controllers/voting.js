@@ -2,47 +2,45 @@ var badPost, createPostFlag, getPost, getPostCreator, getUser, miscategorizedPos
 
 Parse.Cloud.define("flagPost", function(request, response) {
   Parse.Cloud.useMasterKey();
-  Parse.Cloud.run()
-  // Fix callback promises
-  getPost(request);
+  getPost(request, response);
 });
-getPost = function(request) {
+getPost = function(request, response) {
   var postQuery;
   postQuery = new Parse.Query("Post");
   postQuery.get(request.params.postId, {
     success: function(post) {
-      fetchPostCreator(request, post);
+      fetchPostCreator(request, response, post);
     },
     error: function(error) {
       response.error("Could not find post by postId");
     }
   });
 };
-fetchPostCreator = function(request, post) {
+fetchPostCreator = function(request, response, post) {
   var postCreatorPointer;
   postCreatorPointer = post.get("user_id");
   postCreatorPointer.fetch({
     success: function(postCreator) {
-      getUser(request, postCreator, post);
+      getUser(request, response, postCreator, post);
     },
     error: function(error) {
       response.error("Could not find poster by post pointer");
     }
   });
 };
-getUser = function(request, postCreator, post) {
+getUser = function(request, response, postCreator, post) {
   var userQuery;
   userQuery = new Parse.Query("User");
   userQuery.get("DETWDbslAU", {
     success: function(user) {
-      createPostFlag(request, user, postCreator, post);
+      createPostFlag(request, response, user, postCreator, post);
     },
     error: function(error) {
       response.error("Could not find current user/flagger");
     }
   });
 };
-createPostFlag = function(request, user, postCreator, post) {
+createPostFlag = function(request, response, user, postCreator, post) {
   var PostFlag = Parse.Object.extend("PostFlag");
   var postFlag = new PostFlag();
   postFlag.set({
@@ -53,10 +51,11 @@ createPostFlag = function(request, user, postCreator, post) {
   });
   postFlag.save(null, {
     success: function(postFlag) {
-      if (postFlag.reason === 0 || 2) {
-        badPost(post, user);
+      var reason = postFlag.get("reason")
+      if (reason === 0 || reason === 2) {
+        badPost(response, post, user);
       } else {
-        miscategorizedPost(post, postFlag);
+        miscategorizedPost(response, post, postFlag, reason);
       }
     },
     error: function(error) {
@@ -64,7 +63,7 @@ createPostFlag = function(request, user, postCreator, post) {
     }
   });
 };
-badPost = function(post, user) {
+badPost = function(response, post, user) {
   post.increment("flags");
   post.addUnique("voted_on_array", user.id);
   if (post.get("flags") > 3) {
@@ -73,14 +72,14 @@ badPost = function(post, user) {
   post.save();
   response.success("Flagged bad post.");
 };
-miscategorizedPost = function(post, postFlag) {
-  if (postFlag.reason === 3) {
+miscategorizedPost = function(response, post, postFlag, reason) {
+  if (reason === 3) {
     post.increment("styleFlags");
     post.category = 0;
-  } else if (postFlag.reason === 4) {
+  } else if (reason === 4) {
     post.increment("randomFlags");
     post.category = 1;
-  } else if (postFlag.reason === 5) {
+  } else if (reason === 5) {
     post.increment("selfieFlags");
     post.category = 2;
   }

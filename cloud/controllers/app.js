@@ -19,7 +19,7 @@ require('cloud/controllers/voting.js');
 //   -H "X-Parse-Application-Id: Q18jrhbRAM2DElR8yiRXyEbPGHM9RTEWA0zu2Gyq" \
 //   -H "X-Parse-REST-API-Key: 4Nq3vepmYNmki59CMPQ5SgKegmPek6wLMQ17tSi6" \
 //   -H "Content-Type: application/json" \
-//   -d '{"postId": "nP8NWmi0ul", "reason": 0}' \
+//   -d '{"postId": "nP8NWmi0ul", "reason": 3}' \
 //   https://api.parse.com/1/functions/flagPost
 
 // In voting.js
