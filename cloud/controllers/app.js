@@ -287,43 +287,6 @@ error: function(error) {
 });
 });
 
-
-
-
-Parse.Cloud.define("userFlaggedAndMovedOn", function(request, response) {
-  Parse.Cloud.useMasterKey();
-  var postId=request.params.postId;
-
-  var  user = request.params.userId;
-  query = new Parse.Query("Post");
-  query.get(postId, {
-    success: function(post) {
-      post.addUnique("voted_on_array", user);
-      post.save();
-      response.success("Flagged recorded and moved on. ")
-    },
-    error: function(error) {
-      console.error("Got an error " + error.code + " : " + error.message);
-    } 
-  });
-});
-
-
-Parse.Cloud.afterSave("Suggestion", function(request) {
-  Parse.Cloud.useMasterKey();
-  query = new Parse.Query("Post");
-  query.get(request.object.get("post_id").id, {
-    success: function(post) {
-      post.increment("suggestions");
-      post.save();
-    },
-    error: function(error) {
-      console.error("Got an error " + error.code + " : " + error.message);
-    }
-  });
-});
-
-
 Parse.Cloud.define("deletePost", function(request, response) {
   Parse.Cloud.useMasterKey();
   var postId=request.params.postId;
@@ -342,11 +305,6 @@ Parse.Cloud.define("deletePost", function(request, response) {
   });
 
 });
-
-
-
-
-
 
 Parse.Cloud.define("deactivatePost", function(request, response) {
   Parse.Cloud.useMasterKey();
@@ -368,28 +326,6 @@ Parse.Cloud.define("deactivatePost", function(request, response) {
 });
 
 
-
-
-Parse.Cloud.define("decrimentComments", function(request, response) {
-  Parse.Cloud.useMasterKey();
-  var postId=request.params.postId;
-  var Post = Parse.Object.extend("Post");
-  var query = new Parse.Query(Post);
-  query.get(postId, {
-    success: function(postObject) {
-      postObject.increment("suggestions", -2);
-      postObject.save();
-      response.success("post decrimented");
-    },
-    error: function(object, error) {
-      response.error("post not decrimented");
-    }
-  });
-
-});
-
-
-
 Parse.Cloud.define("clearPost", function(request, response) {
   Parse.Cloud.useMasterKey();
   var postId=request.params.postId;
@@ -408,10 +344,6 @@ Parse.Cloud.define("clearPost", function(request, response) {
   });
 
 });
-
-
-
-
 
 
 Parse.Cloud.define("updateGroupNotifications", function(request, response) {
@@ -460,8 +392,6 @@ Parse.Cloud.define("leaveGroup", function(request, response) {
   });
 
 });
-
-
 
 
 

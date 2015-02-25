@@ -1,40 +1,38 @@
-var badPost, createPostFlag, getPost, getPostCreator, getUser, miscategorizedPost;
+var badPost, createPostFlag, getPost, getPostOwner, getUser, miscategorizedPost;
 // Adjust to accept user object instead of hardcoded
 Parse.Cloud.define("flagPost", function(request, response) {
   Parse.Cloud.useMasterKey();
   getPost(request, response);
 });
 getPost = function(request, response) {
-  var postQuery;
-  postQuery = new Parse.Query("Post");
+  var postQuery = new Parse.Query("Post");
   postQuery.get(request.params.postId, {
     success: function(post) {
-      fetchPostCreator(request, response, post);
+      fetchPostOwner(request, response, post);
     },
     error: function(error) {
       response.error("Could not find post by postId");
     }
   });
 };
-fetchPostCreator = function(request, response, post) {
-  var postCreatorPointer;
-  postCreatorPointer = post.get("user_id");
-  postCreatorPointer.fetch({
-    success: function(postCreator) {
-      createPostFlag(request, response, postCreator, post);
+fetchPostOwner = function(request, response, post) {
+  var postOwnerPointer = post.get("user_id");
+  postOwnerPointer.fetch({
+    success: function(postOwner) {
+      createPostFlag(request, response, postOwner, post);
     },
     error: function(error) {
       response.error("Could not find poster by post pointer");
     }
   });
 };
-createPostFlag = function(request, response, postCreator, post) {
+createPostFlag = function(request, response, postOwner, post) {
   var PostFlag = Parse.Object.extend("PostFlag");
   var postFlag = new PostFlag();
   postFlag.set({
     flagger: request.user,
     post: post,
-    flagged: postCreator,
+    flagged: postOwner,
     reason: request.params.reason
   });
   postFlag.save(null, {
