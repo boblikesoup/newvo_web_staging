@@ -394,49 +394,6 @@ Parse.Cloud.define("leaveGroup", function(request, response) {
 });
 
 
-
-Parse.Cloud.job("suggestionCounter", function(request, status) {
-  // Set up to modify user data
-  Parse.Cloud.useMasterKey();
-  var counter = 0;
-  // Query for all users
-  var Posts = Parse.Object.extend("Post");
-  var query = new Parse.Query(Posts);
-  query.each(function(newPost) {
-      // Update to plan value passed in
-      var Suggestions = Parse.Object.extend("Suggestion");
-      var query1 = new Parse.Query(Suggestions);
-      query1.equalTo(("post_id"), newPost);
-      query1.count({
-        success: function(count) {
-    // The count request succeeded. Show the count
-    newPost.set("suggestions", count);
-    newPost.save();
-  },
-  error: function(error) {
-    // The request failed
-  }
-});
-
-      if (counter % query.count === 0) {
-        // Set the  job's progress status
-        status.message(counter + " posts processed.");
-      }
-      counter += 1;
-      return newPost.save();
-    }).then(function() {
-    // Set the job's success status
-    console.log(counter + " posts processed.");
-    status.success("Migration completed successfully.");
-  }, function(error) {
-    // Set the job's error status
-    status.error("Uh oh, something went wrong.");
-  });
-  });
-
-
-
-
 Parse.Cloud.job("voteFix", function(request, status) {
   // Set up to modify user data
   Parse.Cloud.useMasterKey();
