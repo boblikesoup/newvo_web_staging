@@ -1,5 +1,5 @@
 require('cloud/controllers/voting.js');
-
+require('cloud/controllers/flagging.js');
 
 // Test if API is working
 // Parse.Cloud.define("hello", function(request, response) {
@@ -13,141 +13,13 @@ require('cloud/controllers/voting.js');
 //   -d '{}' \
 //   https://api.parse.com/1/functions/hello
 
-
-// Test flagPost
+// Test flagPost.  Need to add request.user
 // curl -X POST \
 //   -H "X-Parse-Application-Id: Q18jrhbRAM2DElR8yiRXyEbPGHM9RTEWA0zu2Gyq" \
 //   -H "X-Parse-REST-API-Key: 4Nq3vepmYNmki59CMPQ5SgKegmPek6wLMQ17tSi6" \
 //   -H "Content-Type: application/json" \
 //   -d '{"postId": "nP8NWmi0ul", "reason": 3}' \
 //   https://api.parse.com/1/functions/flagPost
-
-// In voting.js
-// Parse.Cloud.define("flagPost", function(request, response)
-// {
-//   Parse.Cloud.useMasterKey();
-  
-//   query = new Parse.Query("Post");
-  
-//   query.get(request.params.postId,
-//   {
-//     success: function(post)
-//     {
-
-//       var PostFlag = Parse.Object.extend({
-//         className: "PostFlag"
-//       });
-//       var postFlag = new PostFlag();
-//       postFlag.set("flagger", request.user);
-//       postFlag.set("post", post);
-//       var User = Parse.Object.extend({
-//         className: "User"
-//       });
-//       var user = new User();
-//       user.id = request.params.flaggedID;
-//       postFlag.set("flagged", user);
-//       postFlag.set("reason", request.params.reason);
-//       postFlag.save
-//       (null,{
-//         success: function(postFlag)
-//         { //increments postFlag
-//           post.increment("flags");
-//           post.addUnique("voted_on_array", request.user.id);
-//           var numbOfFlags =  post.get("flags");
-//           if (numbOfFlags > 3)
-//           {
-//             post.set("status", 3)
-//             post.save();
-//           }
-//           post.save();
-//           earlierResponse = response.success
-//           response.success("Flagged post. " + earlierResponse)
-//         },
-//         error: function(error)
-//         {
-//           response.error("PostFlag did not save");
-//         }
-//       })
-//     },
-//     error: function(error)
-//     {
-//       response.error("Could not find post by ID");
-//     }
-//   });
-// })
-
-
-// Parse.Cloud.define("flagPostForContent", function(request, response)
-// {
-//   Parse.Cloud.useMasterKey();
-  
-//   query = new Parse.Query("Post");
-  
-//   query.get(request.params.postId,
-//   {
-//     success: function(post)
-//     {
-
-//       var PostFlag = Parse.Object.extend({
-//         className: "PostFlag"
-//       });
-//       var postFlag = new PostFlag();
-//       postFlag.set("flagger", request.user);
-//       postFlag.set("post", post);
-//       var User = Parse.Object.extend({
-//         className: "User"
-//       });
-//       var user = new User();
-//       user.id = request.params.flaggedID;
-//       postFlag.set("flagged", user);
-//       postFlag.set("reason", request.params.reason);
-//       postFlag.save
-//       (null,{
-//         success: function(postFlag)
-//         { //increments postFlag
-//           if(request.params.reason == 4){
-//             post.increment("randomFlags");
-//           }else{
-//             post.increment("styleFlags");
-//           }
-
-//           post.addUnique("voted_on_array", request.user.id);
-          
-          
-//           if(request.params.reason == 4){
-//             var numbOfFlags =  post.get("randomFlags");
-//             if (numbOfFlags > 0)
-//             {
-//               post.set("post_category", 1)
-//               post.save();
-//             }
-
-//           } else{
-//             var numbOfFlags =  post.get("styleFlags");
-//             if (numbOfFlags > 0)
-//             {
-//               post.set("post_category", 0)
-//               post.save();
-//             }
-
-//           }
-
-//           post.save();
-//           earlierResponse = response.success
-//           response.success("Flagged post. " + earlierResponse)
-//         },
-//         error: function(error)
-//         {
-//           response.error("PostFlag did not save");
-//         }
-//       })
-// },
-// error: function(error)
-// {
-//   response.error("Could not find post by ID");
-// }
-// });
-// })
 
 Parse.Cloud.afterSave("Vote", function(request) {
   Parse.Cloud.useMasterKey();
@@ -413,6 +285,9 @@ error: function(error) {
 }
 });
 });
+
+
+
 
 Parse.Cloud.define("userFlaggedAndMovedOn", function(request, response) {
   Parse.Cloud.useMasterKey();
