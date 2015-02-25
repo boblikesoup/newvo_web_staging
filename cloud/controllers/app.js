@@ -1,5 +1,6 @@
 require('cloud/controllers/voting.js');
 
+
 // Test if API is working
 // Parse.Cloud.define("hello", function(request, response) {
 //   response.success("Hello world!");
