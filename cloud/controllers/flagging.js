@@ -68,7 +68,9 @@ miscategorizedPost = function(response, post, postFlag, reason) {
   } else if (reason === 5) {
     post.increment("selfieFlags");
     post.category = 2;
-  }
+  } else {
+    response.error("Invalid reason.  Did not increment flags or change post category.")
+  };
   post.save();
   response.success("Flagged miscategorized post.");
 };

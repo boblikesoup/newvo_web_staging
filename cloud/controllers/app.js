@@ -22,271 +22,6 @@ require('cloud/controllers/suggestions.js');
 //   -d '{"postId": "nP8NWmi0ul", "reason": 3}' \
 //   https://api.parse.com/1/functions/flagPost
 
-Parse.Cloud.afterSave("Vote", function(request) {
-  Parse.Cloud.useMasterKey();
-  query = new Parse.Query("Post");
-  query.get(request.object.get("post_id").id, {
-    success: function(post) {
-      var number =request.object.get("vote");
-      var user = request.object.get("user_id").id;
-      var allVotes = post.get("voted_on_array");
-      var superUser = post.get("user_id");
-      if (number==0){
-        post.increment("votes_0");
-        post.increment("counter_0");
-        post.addUnique("voted_on_array", user);
-        if(allVotes){
-          if(allVotes.length > 1999){
-            post.set("status", 1);
-          }
-                 //start
-                 if(allVotes.length == 2){
-                  var query = new Parse.Query(Parse.Installation);
-                  query.equalTo("publicId", superUser.id);
-                  Parse.Push.send({
-                    where: query,
-                    data: {
-                      title: "You got 3 votes new votes!",
-                      alert: "You got 3 votes on your post on NewVo",
-                      badge: "Increment",
-                      action: "NewVotes",
-                      searchObjectPost:post.id
-                    }
-                  }, {
-                   success: function() {
-                    response.success("is Done.");
-                  },
-                  error: function(message) {
-                   response.error(message);
-                 }
-               });
-
-                }
-  //end
-
-
-
-
-         //start
-         if(allVotes.length == 9){
-          var query = new Parse.Query(Parse.Installation);
-
-          query.equalTo("publicId", superUser.id);
-          Parse.Push.send({
-            where: query,
-            data: {
-              title: "You got 10 votes new votes!",
-              alert: "You got 10 votes on your post on NewVo",
-              badge: "Increment",
-              action: "NewVotes",
-              searchObjectPost:post.id
-            }
-          }, {
-           success: function() {
-            response.success("is Done.");
-          },
-          error: function(message) {
-           response.error(message);
-         }
-       });
-
-        }
-  //end
-  
-  
-     //start
-     if(allVotes.length == 49){
-      var query = new Parse.Query(Parse.Installation);
-      query.equalTo("publicId", superUser.id);
-      Parse.Push.send({
-        where: query,
-        data: {
-          title: "You got 50 votes new votes!",
-          alert: "You got 50 votes on your post on NewVo",
-          badge: "Increment",
-          action: "NewVotes",
-          searchObjectPost:post.id
-        }
-      }, {
-       success: function() {
-        response.success("is Done.");
-      },
-      error: function(message) {
-       response.error(message);
-     }
-   });
-
-    }
-  //end
-  
-  
-     //start
-     if(allVotes.length == 99){
-      var query = new Parse.Query(Parse.Installation);
-      query.equalTo("publicId", superUser.id);
-      Parse.Push.send({
-        where: query,
-        data: {
-          title: "You got 100 votes new votes!",
-          alert: "You got 100 votes on your post on NewVo",
-          badge: "Increment",
-          action: "NewVotes",
-          searchObjectPost:post.id
-        }
-      }, {
-       success: function() {
-        response.success("is Done.");
-      },
-      error: function(message) {
-       response.error(message);
-     }
-   });
-
-    }
-  //end
-  
-  
-  
-  
-  
-  
-  
-  
-  
-}
-post.save();
-}else{
-  post.increment("votes_1");
-  post.increment("counter_1");
-  post.addUnique("voted_on_array", user);
-  if(allVotes){
-    if(allVotes.length > 1999){
-      post.set("status", 1);
-    }
-
-
-           //start
-           if(allVotes.length == 2){
-            var query = new Parse.Query(Parse.Installation);
-            query.equalTo("publicId", superUser.id);
-            Parse.Push.send({
-              where: query,
-              data: {
-                title: "You got 3 votes new votes!",
-                alert: "You got 3 votes on your post on NewVo",
-                badge: "Increment",
-                action: "NewVotes",
-                searchObjectPost:post.id
-              }
-            }, {
-             success: function() {
-              response.success("is Done.");
-            },
-            error: function(message) {
-             response.error(message);
-           }
-         });
-
-          }
-  //end
-
-
-
-
-
-
-
-       //start
-       if(allVotes.length == 9){
-        var query = new Parse.Query(Parse.Installation);
-        query.equalTo("publicId", superUser.id);
-        Parse.Push.send({
-          where: query,
-          data: {
-            title: "You got 10 votes new votes!",
-            alert: "You got 10 votes on your post on NewVo",
-            badge: "Increment",
-            action: "NewVotes",
-            searchObjectPost:post.id
-          }
-        }, {
-         success: function() {
-          response.success("is Done.");
-        },
-        error: function(message) {
-         response.error(message);
-       }
-     });
-
-      }
-  //end
-  
-       //start
-       if(allVotes.length == 49){
-        var query = new Parse.Query(Parse.Installation);
-        query.equalTo("publicId", superUser.id);
-        Parse.Push.send({
-          where: query,
-          data: {
-            title: "You got 50 votes new votes!",
-            alert: "You got 50 votes on your post on NewVo",
-            badge: "Increment",
-            action: "NewVotes",
-            searchObjectPost:post.id
-          }
-        }, {
-         success: function() {
-          response.success("is Done.");
-        },
-        error: function(message) {
-         response.error(message);
-       }
-     });
-
-      }
-  //end
-  
-  
-     //start
-     if(allVotes.length == 99){
-      var query = new Parse.Query(Parse.Installation);
-      query.equalTo("publicId", superUser.id);
-      Parse.Push.send({
-        where: query,
-        data: {
-          title: "You got 100 votes new votes!",
-          alert: "You got 100 votes on your post on NewVo",
-          badge: "Increment",
-          action: "NewVotes",
-          searchObjectPost:post.id
-        }
-      }, {
-       success: function() {
-        response.success("is Done.");
-      },
-      error: function(message) {
-       response.error(message);
-     }
-   });
-
-    }
-  //end
-  
-  
-  
-  
-  
-}
-post.save();
-}
-
-},
-error: function(error) {
-  console.error("Got an error " + error.code + " : " + error.message);
-}
-});
-});
-
 Parse.Cloud.define("deletePost", function(request, response) {
   Parse.Cloud.useMasterKey();
   var postId=request.params.postId;
@@ -425,9 +160,6 @@ Parse.Cloud.job("voteFix", function(request, status) {
 
 
 
-
-
-
 Parse.Cloud.define("push_badge_notifications", function(request, response) {
  var query = new Parse.Query(Parse.Installation);
   // Send a push to all installations matching any of these emails.
@@ -452,9 +184,6 @@ error: function(message) {
   
   //response.success("Done.");
 });
-
-
-
 
 
 
@@ -515,12 +244,6 @@ error: function(message) {
 
 
 
-
-
-
-
-
-
 Parse.Cloud.define("clearBadges", function(request, response) {
   Parse.Cloud.useMasterKey();
   var userID=  request.params.userID;
@@ -549,4 +272,255 @@ Parse.Cloud.define("clearBadges", function(request, response) {
   }
 });
 
+});
+
+Parse.Cloud.afterSave("Vote", function(request) {
+  Parse.Cloud.useMasterKey();
+  query = new Parse.Query("Post");
+  query.get(request.object.get("post_id").id, {
+    success: function(post) {
+      var number =request.object.get("vote");
+      var user = request.object.get("user_id").id;
+      var allVotes = post.get("voted_on_array");
+      var superUser = post.get("user_id");
+      if (number==0){
+        post.increment("votes_0");
+        post.increment("counter_0");
+        post.addUnique("voted_on_array", user);
+        if(allVotes){
+          if(allVotes.length > 1999){
+            post.set("status", 1);
+          }
+                 //start
+                 if(allVotes.length == 2){
+                  var query = new Parse.Query(Parse.Installation);
+                  query.equalTo("publicId", superUser.id);
+                  Parse.Push.send({
+                    where: query,
+                    data: {
+                      title: "You got 3 votes new votes!",
+                      alert: "You got 3 votes on your post on NewVo",
+                      badge: "Increment",
+                      action: "NewVotes",
+                      searchObjectPost:post.id
+                    }
+                  }, {
+                   success: function() {
+                    response.success("is Done.");
+                  },
+                  error: function(message) {
+                   response.error(message);
+                 }
+               });
+
+                }
+  //end
+
+
+
+         //start
+         if(allVotes.length == 9){
+          var query = new Parse.Query(Parse.Installation);
+
+          query.equalTo("publicId", superUser.id);
+          Parse.Push.send({
+            where: query,
+            data: {
+              title: "You got 10 votes new votes!",
+              alert: "You got 10 votes on your post on NewVo",
+              badge: "Increment",
+              action: "NewVotes",
+              searchObjectPost:post.id
+            }
+          }, {
+           success: function() {
+            response.success("is Done.");
+          },
+          error: function(message) {
+           response.error(message);
+         }
+       });
+
+        }
+  //end
+  
+  
+     //start
+     if(allVotes.length == 49){
+      var query = new Parse.Query(Parse.Installation);
+      query.equalTo("publicId", superUser.id);
+      Parse.Push.send({
+        where: query,
+        data: {
+          title: "You got 50 votes new votes!",
+          alert: "You got 50 votes on your post on NewVo",
+          badge: "Increment",
+          action: "NewVotes",
+          searchObjectPost:post.id
+        }
+      }, {
+       success: function() {
+        response.success("is Done.");
+      },
+      error: function(message) {
+       response.error(message);
+     }
+   });
+
+    }
+  //end
+  
+  
+     //start
+     if(allVotes.length == 99){
+      var query = new Parse.Query(Parse.Installation);
+      query.equalTo("publicId", superUser.id);
+      Parse.Push.send({
+        where: query,
+        data: {
+          title: "You got 100 votes new votes!",
+          alert: "You got 100 votes on your post on NewVo",
+          badge: "Increment",
+          action: "NewVotes",
+          searchObjectPost:post.id
+        }
+      }, {
+       success: function() {
+        response.success("is Done.");
+      },
+      error: function(message) {
+       response.error(message);
+     }
+   });
+
+    }
+  //end
+ 
+  
+  
+}
+post.save();
+}else{
+  post.increment("votes_1");
+  post.increment("counter_1");
+  post.addUnique("voted_on_array", user);
+  if(allVotes){
+    if(allVotes.length > 1999){
+      post.set("status", 1);
+    }
+
+
+           //start
+           if(allVotes.length == 2){
+            var query = new Parse.Query(Parse.Installation);
+            query.equalTo("publicId", superUser.id);
+            Parse.Push.send({
+              where: query,
+              data: {
+                title: "You got 3 votes new votes!",
+                alert: "You got 3 votes on your post on NewVo",
+                badge: "Increment",
+                action: "NewVotes",
+                searchObjectPost:post.id
+              }
+            }, {
+             success: function() {
+              response.success("is Done.");
+            },
+            error: function(message) {
+             response.error(message);
+           }
+         });
+
+          }
+  //end
+
+
+       //start
+       if(allVotes.length == 9){
+        var query = new Parse.Query(Parse.Installation);
+        query.equalTo("publicId", superUser.id);
+        Parse.Push.send({
+          where: query,
+          data: {
+            title: "You got 10 votes new votes!",
+            alert: "You got 10 votes on your post on NewVo",
+            badge: "Increment",
+            action: "NewVotes",
+            searchObjectPost:post.id
+          }
+        }, {
+         success: function() {
+          response.success("is Done.");
+        },
+        error: function(message) {
+         response.error(message);
+       }
+     });
+
+      }
+  //end
+  
+       //start
+       if(allVotes.length == 49){
+        var query = new Parse.Query(Parse.Installation);
+        query.equalTo("publicId", superUser.id);
+        Parse.Push.send({
+          where: query,
+          data: {
+            title: "You got 50 votes new votes!",
+            alert: "You got 50 votes on your post on NewVo",
+            badge: "Increment",
+            action: "NewVotes",
+            searchObjectPost:post.id
+          }
+        }, {
+         success: function() {
+          response.success("is Done.");
+        },
+        error: function(message) {
+         response.error(message);
+       }
+     });
+
+      }
+  //end
+  
+  
+     //start
+     if(allVotes.length == 99){
+      var query = new Parse.Query(Parse.Installation);
+      query.equalTo("publicId", superUser.id);
+      Parse.Push.send({
+        where: query,
+        data: {
+          title: "You got 100 votes new votes!",
+          alert: "You got 100 votes on your post on NewVo",
+          badge: "Increment",
+          action: "NewVotes",
+          searchObjectPost:post.id
+        }
+      }, {
+       success: function() {
+        response.success("is Done.");
+      },
+      error: function(message) {
+       response.error(message);
+     }
+   });
+
+    }
+  //end
+  
+
+  
+}
+post.save();
+}
+
+},
+error: function(error) {
+  console.error("Got an error " + error.code + " : " + error.message);
+}
+});
 });
