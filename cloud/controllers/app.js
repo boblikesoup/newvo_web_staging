@@ -1,6 +1,7 @@
 require('cloud/controllers/voting.js');
 require('cloud/controllers/flagging.js');
 require('cloud/controllers/suggestions.js');
+require('cloud/controllers/post-querying.js')
 
 // Test if API is working
 // Parse.Cloud.define("hello", function(request, response) {
@@ -14,13 +15,7 @@ require('cloud/controllers/suggestions.js');
 //   -d '{}' \
 //   https://api.parse.com/1/functions/hello
 
-// Test flagPost.  Need to add request.user
-// curl -X POST \
-//   -H "X-Parse-Application-Id: Q18jrhbRAM2DElR8yiRXyEbPGHM9RTEWA0zu2Gyq" \
-//   -H "X-Parse-REST-API-Key: 4Nq3vepmYNmki59CMPQ5SgKegmPek6wLMQ17tSi6" \
-//   -H "Content-Type: application/json" \
-//   -d '{"postId": "nP8NWmi0ul", "reason": 3}' \
-//   https://api.parse.com/1/functions/flagPost
+
 
 Parse.Cloud.define("deletePost", function(request, response) {
   Parse.Cloud.useMasterKey();
@@ -38,7 +33,6 @@ Parse.Cloud.define("deletePost", function(request, response) {
       response.error("post not deleted");
     }
   });
-
 });
 
 Parse.Cloud.define("deactivatePost", function(request, response) {

@@ -1,5 +1,13 @@
 var badPost, createPostFlag, getPost, getPostOwner, getUser, miscategorizedPost;
 // Adjust to accept user object instead of hardcoded
+
+// curl -X POST \
+//   -H "X-Parse-Application-Id: Q18jrhbRAM2DElR8yiRXyEbPGHM9RTEWA0zu2Gyq" \
+//   -H "X-Parse-REST-API-Key: 4Nq3vepmYNmki59CMPQ5SgKegmPek6wLMQ17tSi6" \
+//   -H "Content-Type: application/json" \
+//   -d '{"postId": "nP8NWmi0ul", "reason": 3}' \
+//   https://api.parse.com/1/functions/flagPost
+
 Parse.Cloud.define("flagPost", function(request, response) {
   Parse.Cloud.useMasterKey();
   getPost(request, response);
