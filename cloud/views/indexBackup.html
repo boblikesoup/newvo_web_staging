@@ -6,9 +6,16 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
   <title>Newvo</title>
-
+<!-- 
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular-route.js"></script>
+   -->
+  <script src="javascripts/index.js"></script>
+<!-- 
+  <script src="javascripts/client-app.js"></script>
+   -->
   <script async="" src="//www.perfectfeed.com/newvo.me/Newvo_files/analytics.js"></script>
-  <script src="//www.perfectfeed.com/newvo.me/Newvo_files/application-61750d93bc182027ed80f95bad1e6f6e.js"></script>
+
   <meta content="authenticity_token" name="csrf-param">
   <meta content="S/BNENK14uLAGsqkFqZLArZwKfHBM/HFC5BqzP9qWiA=" name="csrf-token">
   <meta name="apple-itunes-app" content="app-id=883925923, affiliate-data=myAffiliateData, app-argument=myURL">
@@ -27,11 +34,25 @@
   <meta property="al:web:should_fallback" content="false" />
 </head>
 <body>
+  <ul class="cb-slideshow">
+    <li>
+      <span>Image 01</span>
+      <div><h3>Casual</h3></div>
+    </li>
+  </ul>
+   <ul class="cb-slideshow">
+    <li>
+      <span>Image 02</span>
+      <div><h3>Friends</h3></div>
+    </li>
+  </ul>
+
+
   <p class="notice"></p>
   <p class="alert"></p>
 
   <!-- Begin MailChimp Signup Form -->
-  <div id="mc_embed_signup">
+  <div id="mc_embed_signup" ng-show="index.show">
     <form action="https://herokuapp.us3.list-manage.com/subscribe/post?u=35ba0a0a46949ae2ed6e21aeb&id=748e65448f" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate="">
       <div class="form-content" for="mce-EMAIL">
 

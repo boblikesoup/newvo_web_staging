@@ -1,7 +1,7 @@
-require('cloud/controllers/voting.js');
-require('cloud/controllers/flagging.js');
-require('cloud/controllers/suggestions.js');
-require('cloud/controllers/post-querying.js')
+require('cloud/api/voting.js');
+require('cloud/api/flagging.js');
+require('cloud/api/suggestions.js');
+require('cloud/api/post-querying.js')
 
 // Test if API is working
 // Parse.Cloud.define("hello", function(request, response) {
