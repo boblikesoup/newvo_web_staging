@@ -30,3 +30,9 @@ ul.nav li.active a {
 a.navbar-brand {
 	color: white !important;
 }
+
+footer {
+  bottom: 5%;
+  position: fixed;
+  left: 50%;
+}

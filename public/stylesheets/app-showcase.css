@@ -17,8 +17,6 @@ ul.cb-slideshow {
 }
 .cb-slideshow:after { 
     content: '';
-    background: transparent url(../images/background-rainbow.png) no-repeat center center fixed;
-    background-size: 100% 100%;
 }
 .cb-slideshow li span { 
     width: 100%;
