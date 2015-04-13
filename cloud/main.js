@@ -16,5 +16,9 @@ app.get('/', function(req, res) {
     res.render('index');
 });
 
+app.get('/blog', function(req, res) {
+    res.render('blog-index');
+});
+
 // Attach the Express app to Cloud Code.
 app.listen();

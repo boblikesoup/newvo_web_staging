@@ -1,0 +1,32 @@
+html
+  head
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title NewVo
+    link(rel='stylesheet', href='stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='stylesheets/style.css')
+    block header
+  body
+    .navbar.navbar-default.navbar-fixed-top
+      .container
+        .navbar-header
+          a.navbar-brand(href='/') NewVo
+          button.navbar-toggle(type='button', data-toggle='collapse', datatarget='#navbar-main')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        navbar-main.navbar-collapse.collapse
+          ul.nav.navbar-nav
+            li
+              a(href='/voting/') Explore
+          ul.nav.navbar-nav.navbar-right
+            li
+              a(href='/signin/') Sign in
+    .container
+      block content
+
+    footer
+      .row
+        .col-xs-12
+          small &copy; NewVo 2015
+
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')

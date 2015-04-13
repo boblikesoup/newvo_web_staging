@@ -229,3 +229,10 @@ ul.cb-slideshow {
 @media screen and (max-width: 600px) { 
     .cb-slideshow li div h3 { font-size: 80px }
 }
+
+footer {
+  display: inline;
+  bottom: 5%;
+  position: fixed;
+  left: 50%;
+}

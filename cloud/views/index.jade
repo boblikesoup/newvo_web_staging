@@ -5,58 +5,34 @@ doctype html
 //- Input signup and link boxes
 //- Input app images
 
-html
-  head
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    title NewVo
-    link(rel='stylesheet', href='stylesheets/bootstrap.min.css')
-    link(rel='stylesheet', href='stylesheets/style.css')
-    link(rel='stylesheet', href='stylesheets/app-showcase.css')
-  body
-    ul.cb-slideshow
-      li
-        span Image 01
-        div
-          h3 Casual
-      li
-        span Image 02
-        div
-          h3 Friends
-      li
-        span Image 03
-        div
-          h3 Dates
-      li
-        span Image 04
-        div
-          h3 Work
-      li
-        span Image 05
-        div
-          h3 Shopping
-      li
-        span Image 06
-        div
-          h3 Holidays
-    .navbar.navbar-default.navbar-fixed-top
-      .container
-        .navbar-header
-          a.navbar-brand(href='/') NewVo
-          button.navbar-toggle(type='button', data-toggle='collapse', datatarget='#navbar-main')
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-        navbar-main.navbar-collapse.collapse
-          ul.nav.navbar-nav
-            li
-              a(href='/voting/') Explore
-          ul.nav.navbar-nav.navbar-right
-            li
-              a(href='/signin/') Sign in
+extends layout
 
-    footer
-      .row
-        .col-xs-12
-          small &copy; NewVo 2015
+block header
+  link(rel='stylesheet', href='stylesheets/app-showcase.css')
 
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+block content
+  ul.cb-slideshow
+    li
+      span Image 01
+      div
+        h3 Casual
+    li
+      span Image 02
+      div
+        h3 Friends
+    li
+      span Image 03
+      div
+        h3 Dates
+    li
+      span Image 04
+      div
+        h3 Work
+    li
+      span Image 05
+      div
+        h3 Shopping
+    li
+      span Image 06
+      div
+        h3 Holidays
