@@ -20,5 +20,9 @@ app.get('/blog', function(req, res) {
     res.render('blog-index');
 });
 
+app.get('/mobile-login', function(req, res) {
+    res.render('blank-page');
+});
+
 // Attach the Express app to Cloud Code.
 app.listen();

@@ -43,7 +43,7 @@ Parse.Cloud.define("fetchVotingPosts", function(request, response) {
   });
 });
 
-
+// Age selector defaults to 20?
 var createAgeRange = function(age) {
 	var ageRange = {};
 	if (age<11){
@@ -66,4 +66,3 @@ var createAgeRange = function(age) {
 	return ageRange;
 };
 
-// Age selector defaults to 20
