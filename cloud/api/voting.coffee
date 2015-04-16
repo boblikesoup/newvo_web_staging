@@ -13,19 +13,23 @@ Parse.Cloud.afterSave "Vote", (request) ->
       else
         post.increment "votes_1"
         post.increment "counter_1"
-
       post.addUnique "voted_on_array", user
-
       if allVotes
-        if allVotes.length is 2
-          voteNewsPush(allVotes.length, superUser, post);
-        else if allVotes.length > 1999
-          post.set "status", 1  
+        votes = allVotes.length
+        if votes is 2 or votes is 9 or votes is 49 or votes is 99 or votes is 199
+          voteNewsPush votes, superUser, post
+        else post.set "status", 1  if votes > 1999
+      post.save()
 
-        post.save()
+# Create VoteNews if does not exist
+#   Else update votes and reset viewed to False
+#   Only send push if user has notification setting != False
+
+
 
     error: (error) ->
       console.error "Got an error " + error.code + " : " + error.message
+
 
 voteNewsPush = (votes, superUser, post) ->
   votes++
@@ -33,8 +37,8 @@ voteNewsPush = (votes, superUser, post) ->
     titleCaption = "You got " + votes + " new votes!"
     alertCaption = "You got " + votes + " votes on your post on NewVo"
   else
-    titleCaption = "Wow, you got " + votes++ + " new votes!"
-    alertTitle = "Wow, you got " + votes++ + " votes on your post on NewVo"
+    titleCaption = "Wow, you got " + votes + " new votes!"
+    alertCaption = "Wow, you got " + votes + " votes on your post on NewVo"
   query = new Parse.Query(Parse.Installation)
   query.equalTo "publicId", superUser.id
   Parse.Push.send

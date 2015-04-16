@@ -17,13 +17,6 @@ Parse.Cloud.define("unfavorite", function(request, response) {
 // Newfeed
 // Fetch news (only new that certain installations haven't seen?)
 
-// “Your post has reached 3/10/50/100 votes.” “WOW!  Your post has reached 200 votes!” - image of one/both posts in circle
-// Vote afterSave
-//   Create VoteNews if does not exist
-//     Else update votes and reset viewed to False
-//   Only send push if user has notification setting != False
-
-
 
 // “Someone has a new suggestion for your look” (profile pic if was a friend you tagged, else letter)
   // create SuggestionNews ()

@@ -30,8 +30,8 @@ Parse.Cloud.afterSave("Vote", function(request) {
         } else if (votes > 1999) {
           post.set("status", 1);
         }
-        post.save();
       }
+      post.save();
     },
     error: function(error) {
       console.error("Got an error " + error.code + " : " + error.message);
@@ -46,8 +46,8 @@ var voteNewsPush = function(votes, superUser, post) {
     titleCaption = "You got " + votes + " new votes!";
     alertCaption = "You got " + votes + " votes on your post on NewVo";
   } else {
-    titleCaption = "Wow, you got " + votes++ + " new votes!";
-    alertCaption = "Wow, you got " + votes++ + " votes on your post on NewVo";
+    titleCaption = "Wow, you got " + votes + " new votes!";
+    alertCaption = "Wow, you got " + votes + " votes on your post on NewVo";
   }
   var query = new Parse.Query(Parse.Installation);
   query.equalTo("publicId", superUser.id);
