@@ -1,47 +1,41 @@
-//Function to set counters and send push notifications
-
 // Sends push notifications when posts receive 3,10,50,100,200 votes
 Parse.Cloud.afterSave("Vote", function(request) {
   Parse.Cloud.useMasterKey();
-  var query = new Parse.Query("Post");
-  query.get(request.object.get("post_id").id, {
+  var postQuery = new Parse.Query("Post");
+  postQuery.get(request.object.get("post_id").id, {
     success: function(post) {
-      var allVotes, number, superUser, user;
+      var allVotes, number, superUser, user, votes;
       number = request.object.get("vote");
-      user = request.object.get("user_id").id;
-      allVotes = post.get("voted_on_array");
-      superUser = post.get("user_id");
-      if (number === 0) {
-        post.increment("votes_0");
-        post.increment("counter_0");
-      } else {
-        post.increment("votes_1");
-        post.increment("counter_1");
-      }
-      post.addUnique("voted_on_array", user);
-      if (allVotes) {
-        var votes = allVotes.length;
-        if (votes === 2 || 
-            votes === 9 || 
-            votes === 49 || 
-            votes === 99 || 
-            votes === 199) {
-          voteNewsPush(votes, superUser, post);
-        } else if (votes > 1999) {
-          post.set("status", 1);
+      var userQuery = new Parse.Query("User");
+      userQuery.get(request.object.get("user_id").id, {
+        success: function(user){
+          if (number === 0) {
+            post.increment("votes_0");
+            post.increment("counter_0");
+          } else {
+            post.increment("votes_1");
+            post.increment("counter_1");
+          }
+          post.addUnique("voted_on_array", user.id);
+          post.save();
+          votes = post.get("voted_on_array").length;
+          if (votes === 3 || votes === 10 || votes === 50 || votes === 100 || votes === 200) {
+            // voteNewsPush(votes, user.id, post);
+            createUpdateVoteNews(votes, user, post, request);
+          };
+        },
+        error: function(error) {
+          console.error("Got an error " + error.code + " : " + error.message);
         }
-      }
-      post.save();
+      });
     },
     error: function(error) {
       console.error("Got an error " + error.code + " : " + error.message);
     }
   });
 });
-
-var voteNewsPush = function(votes, superUser, post) {
-  var alertCaption, titleCaption;
-  votes++;
+var voteNewsPush = function(votes, userId, post) {
+  var alertCaption, installationQuery, titleCaption;
   if (votes < 200) {
     titleCaption = "You got " + votes + " new votes!";
     alertCaption = "You got " + votes + " votes on your post on NewVo";
@@ -49,10 +43,10 @@ var voteNewsPush = function(votes, superUser, post) {
     titleCaption = "Wow, you got " + votes + " new votes!";
     alertCaption = "Wow, you got " + votes + " votes on your post on NewVo";
   }
-  var query = new Parse.Query(Parse.Installation);
-  query.equalTo("publicId", superUser.id);
+  installationQuery = new Parse.Query(Parse.Installation);
+  installationQuery.equalTo("publicId", userId);
   Parse.Push.send({
-    where: query,
+    where: installationQuery,
     data: {
       title: pushTitle,
       alert: alertTitle,
@@ -62,7 +56,18 @@ var voteNewsPush = function(votes, superUser, post) {
     }
   });
 };
-
+var createUpdateVoteNews = function(votes, user, post, request) {
+  var VoteNews = Parse.Object.extend("VoteNews");
+  var voteNews = new VoteNews();
+  voteNews.set({
+    votes: votes, 
+    viewed: false,
+    // Accepts objects or pointers
+    user_id: request.object.get("user_id"),
+    post_id: post
+  });
+  voteNews.save();
+};
 
 // Old code.  Missing 200 vote notification
 // Parse.Cloud.afterSave("Vote", function(request) {

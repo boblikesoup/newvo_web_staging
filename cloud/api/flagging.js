@@ -38,6 +38,7 @@ createPostFlag = function(request, response, postOwner, post) {
   var PostFlag = Parse.Object.extend("PostFlag");
   var postFlag = new PostFlag();
   postFlag.set({
+    // Right way to get user?
     flagger: request.user,
     post: post,
     flagged: postOwner,

@@ -76,34 +76,7 @@ Parse.Cloud.define("clearPost", function(request, response) {
 
 });
 
-
-Parse.Cloud.define("push_badge_notifications", function(request, response) {
- var query = new Parse.Query(Parse.Installation);
-  // Send a push to all installations matching any of these emails.
-  query.containedIn("publicId", request.params.userIDS);
-
-  Parse.Push.send({
-   where: query,
-   data: {
-    title: "NewVo Group Update",
-    alert: request.params.msg,
-    badge: "Increment",
-    action: "Groups"
-  }
-}, {
- success: function() {
-  response.success("Done.");
-},
-error: function(message) {
- response.error(message);
-}
-});
-  
-  //response.success("Done.");
-});
-
-
-
+// Rolled into Post afterSave.
 Parse.Cloud.define("push_tagged_notifications", function(request, response) {
  var query = new Parse.Query(Parse.Installation);
   // Send a push to all installations matching any of these emails.
@@ -214,6 +187,7 @@ Parse.Cloud.job("voteFix", function(request, status) {
     status.error("Uh oh, something went wrong.");
   });
   });
+
 // Disabled Feature
 // Parse.Cloud.define("updateGroupNotifications", function(request, response) {
 //   Parse.Cloud.useMasterKey();
@@ -258,4 +232,29 @@ Parse.Cloud.job("voteFix", function(request, status) {
 //       response.error("group not updated");
 //     }
 //   });
+// });
+
+// Parse.Cloud.define("push_badge_notifications", function(request, response) {
+//  var query = new Parse.Query(Parse.Installation);
+//   // Send a push to all installations matching any of these emails.
+//   query.containedIn("publicId", request.params.userIDS);
+
+//   Parse.Push.send({
+//    where: query,
+//    data: {
+//     title: "NewVo Group Update",
+//     alert: request.params.msg,
+//     badge: "Increment",
+//     action: "Groups"
+//   }
+// }, {
+//  success: function() {
+//   response.success("Done.");
+// },
+// error: function(message) {
+//  response.error(message);
+// }
+// });
+  
+//   //response.success("Done.");
 // });
