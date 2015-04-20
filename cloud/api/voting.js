@@ -18,7 +18,7 @@ Parse.Cloud.afterSave("Vote", function(request) {
       post.save();
       votes = post.get("voted_on_array").length;
       if (votes === 3 || votes === 10 || votes === 50 || votes === 100 || votes === 200) {
-        // voteNewsPush(votes, userPointer.id, post);
+        voteNewsPush(votes, userPointer.id, post);
         createUpdateVoteNews(votes, userPointer, post);
       };
     },
@@ -41,8 +41,8 @@ var voteNewsPush = function(votes, userId, post) {
   Parse.Push.send({
     where: installationQuery,
     data: {
-      title: pushTitle,
-      alert: alertTitle,
+      title: titleCaption,
+      alert: alertCaption,
       badge: "Increment",
       action: "NewVotes",
       searchObjectPost: post.id
@@ -55,7 +55,6 @@ var createUpdateVoteNews = function(votes, userPointer, post) {
   voteNews.set({
     votes: votes, 
     viewed: false,
-    // Accepts objects or pointers
     user_id: userPointer,
     post_id: post
   });
