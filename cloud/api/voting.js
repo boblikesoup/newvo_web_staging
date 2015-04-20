@@ -6,28 +6,21 @@ Parse.Cloud.afterSave("Vote", function(request) {
     success: function(post) {
       var allVotes, number, superUser, user, votes;
       number = request.object.get("vote");
-      var userQuery = new Parse.Query("User");
-      userQuery.get(request.object.get("user_id").id, {
-        success: function(user){
-          if (number === 0) {
-            post.increment("votes_0");
-            post.increment("counter_0");
-          } else {
-            post.increment("votes_1");
-            post.increment("counter_1");
-          }
-          post.addUnique("voted_on_array", user.id);
-          post.save();
-          votes = post.get("voted_on_array").length;
-          if (votes === 3 || votes === 10 || votes === 50 || votes === 100 || votes === 200) {
-            // voteNewsPush(votes, user.id, post);
-            createUpdateVoteNews(votes, user, post, request);
-          };
-        },
-        error: function(error) {
-          console.error("Got an error " + error.code + " : " + error.message);
-        }
-      });
+      if (number === 0) {
+        post.increment("votes_0");
+        post.increment("counter_0");
+      } else {
+        post.increment("votes_1");
+        post.increment("counter_1");
+      }
+      userPointer = request.object.get("user_id")
+      post.addUnique("voted_on_array", userPointer.id);
+      post.save();
+      votes = post.get("voted_on_array").length;
+      if (votes === 3 || votes === 10 || votes === 50 || votes === 100 || votes === 200) {
+        // voteNewsPush(votes, userPointer.id, post);
+        createUpdateVoteNews(votes, userPointer, post);
+      };
     },
     error: function(error) {
       console.error("Got an error " + error.code + " : " + error.message);
@@ -56,14 +49,14 @@ var voteNewsPush = function(votes, userId, post) {
     }
   });
 };
-var createUpdateVoteNews = function(votes, user, post, request) {
+var createUpdateVoteNews = function(votes, userPointer, post) {
   var VoteNews = Parse.Object.extend("VoteNews");
   var voteNews = new VoteNews();
   voteNews.set({
     votes: votes, 
     viewed: false,
     // Accepts objects or pointers
-    user_id: request.object.get("user_id"),
+    user_id: userPointer,
     post_id: post
   });
   voteNews.save();

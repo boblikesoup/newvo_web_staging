@@ -17,7 +17,10 @@ require('cloud/api/favorites.js');
 //   -d '{}' \
 //   https://api.parse.com/1/functions/hello
 
-
+// return a pointer to an object with a given id and given class
+function pointerTo(objectId, klass) {
+  return { __type:"Pointer", className:klass, objectId:objectId };
+}
 
 Parse.Cloud.define("deletePost", function(request, response) {
   Parse.Cloud.useMasterKey();

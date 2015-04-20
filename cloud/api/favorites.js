@@ -55,21 +55,21 @@
 
 
 
-// Parse.Cloud.define("unfavorite", function(request, response) {
-//   Parse.Cloud.useMasterKey();
-//   var suggestionId=request.params.favoriteId;
-//   var Favorite = Parse.Object.extend("Favorite");
-//   var favoriteQuery = new Parse.Query(Favorite);
-//   favoriteQuery.get(favoriteId, {
-//     success: function(suggestion) {
-//       favorite.set("status", 1);
-//       favorite.save();
-//     },
-//     error: function(object, error) {
-//       response.error("Error fnding favorite by Id.");
-//     }
-//   });
-// });
+Parse.Cloud.define("unfavorite", function(request, response) {
+  Parse.Cloud.useMasterKey();
+  var suggestionId=request.params.favoriteId;
+  var Favorite = Parse.Object.extend("Favorite");
+  var favoriteQuery = new Parse.Query(Favorite);
+  favoriteQuery.get(favoriteId, {
+    success: function(suggestion) {
+      favorite.set("status", 1);
+      favorite.save();
+    },
+    error: function(object, error) {
+      response.error("Error fnding favorite by Id.");
+    }
+  });
+});
 
 // Newfeed
 // Fetch news (only new that certain installations haven't seen?)
