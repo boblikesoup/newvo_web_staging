@@ -18,7 +18,7 @@ Parse.Cloud.afterSave("Vote", function(request) {
       post.save();
       votes = post.get("voted_on_array").length;
       if (votes === 3 || votes === 10 || votes === 50 || votes === 100 || votes === 200) {
-        voteNewsPush(votes, userPointer.id, post);
+        voteNewsPush(votes, userPointer.id, JSON.stringify(post));
         createUpdateVoteNews(votes, userPointer, post);
       };
     },
@@ -27,14 +27,14 @@ Parse.Cloud.afterSave("Vote", function(request) {
     }
   });
 });
-var voteNewsPush = function(votes, userId, post) {
+var voteNewsPush = function(votes, userId, postId) {
   var alertCaption, installationQuery, titleCaption;
   if (votes < 200) {
-    titleCaption = "You got " + votes + " new votes!";
-    alertCaption = "You got " + votes + " votes on your post on NewVo";
+    titleCaption = "Your post got " + votes + " votes.";
+    alertCaption = "Your post got " + votes + "  on NewVo.";
   } else {
-    titleCaption = "Wow, you got " + votes + " new votes!";
-    alertCaption = "Wow, you got " + votes + " votes on your post on NewVo";
+    titleCaption = "Wow, your post got " + votes + " votes!";
+    alertCaption = "Wow, your post got " + votes + " votes on NewVo!";
   }
   installationQuery = new Parse.Query(Parse.Installation);
   installationQuery.equalTo("publicId", userId);
@@ -45,18 +45,21 @@ var voteNewsPush = function(votes, userId, post) {
       alert: alertCaption,
       badge: "Increment",
       action: "NewVotes",
-      searchObjectPost: post.id
+      postId: postId
     }
   });
 };
+// UPDATES IF EXISTS AND RESETS VIEWED OR NEW EACH TIME?
 var createUpdateVoteNews = function(votes, userPointer, post) {
+  var caption = "Your post got " + votes + " votes."
   var VoteNews = Parse.Object.extend("VoteNews");
   var voteNews = new VoteNews();
   voteNews.set({
     votes: votes, 
     viewed: false,
     user_id: userPointer,
-    post_id: post
+    post_id: post,
+    caption: caption
   });
   voteNews.save();
 };

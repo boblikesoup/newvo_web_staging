@@ -1,57 +1,51 @@
 // // If tagged users, send push and create AskAdviceNews
-// Parse.Cloud.afterSave("Post", function(request) {
-//   Parse.Cloud.useMasterKey();
-  
-//   var postQuery = new Parse.Query("Post");
-//   postQuery.get(request.object.get("post_id").id, {
-//     success: function(post) {
-//       var allVotes, number, superUser, user, votes;
-//       number = request.object.get("vote");
-//       userId = request.object.get("user_id").id;
-//       userIds = request.object.get("user_ids");
-//       post.addUnique("user_tags", userId);
-//       post.save();
-//       superUser = post.get("user_id");
-//       votes = post.get("voted_on_array").length;
-//       if (userIds) {
-//         // voteNewsPush(request, votes, superUser, post);
-//         createUpdateVoteNews(votes, request.user_id, post);
-//       };
-//     },
-//     error: function(error) {
-//       console.error("Got an error " + error.code + " : " + error.message);
-//     }
-//   });
-// });
-// var askAdvicePush = function(request, superUser, post) {
-//   var installationQuery = new Parse.Query(Parse.Installation);
-//   // Send a push to all installations matching any of these emails.
-//   query.containedIn("publicId", request.params.userIDS);
-//   Parse.Push.send({
-//    where: query,
-//    data: {
-//     title: "Your friend asked for your advice",
-//     alert: "Your friend X asked for your advice",
-//     badge: "Increment",
-//     action: "Posts",
-//     searchObjectPost:request.params.searchObjectPost
-//   }
-// };
-
-// var createAskAdviceNews = function(votes, userPointer, post) {
-//   var VoteNews = Parse.Object.extend("VoteNews");
-//   var voteNews = new VoteNews();
-//   console.log("post " + post)
-//   console.log("user "+ userPointer)
-//   //Need to create Parse user and post pointer objects
-//   voteNews.set({
-//     votes: votes, 
-//     viewed: false,
-//     user_id: userPointer,
-//     post_id: post
-//   });
-//   voteNews.save();
-// };
+Parse.Cloud.afterSave("Post", function(request) {
+  Parse.Cloud.useMasterKey();
+  var post = request.object
+  var taggedUserIds = post.get("user_tags");
+  console.log("tagged user ids " + taggedUserIds);
+  if (taggedUserIds) {
+    var userId = post.get("user_id").id
+    userId.fetch({
+      success: function(user) {
+        // TEST QUERY BY POINTER TYPE
+        // askAdvicePush(taggedUserIds, post);
+        // createAskAdviceNews(taggedUsers, userPointer, post.id);
+      };
+    });
+  };
+});
+var askAdvicePush = function(taggedUserIds, postId) {
+  for (var i = 0; i++; taggedUserIds) {
+    var installationQuery = new Parse.Query(Parse.Installation);
+    // Send a push to all installations matching any of these emails.
+    installationQuery.containedIn("publicId", taggedUserIds[i]);
+    Parse.Push.send({
+     where: installationQuery,
+     data: {
+      title: ""  + "asked for your advice.",
+      alert: ""  + "asked for your advice.",
+      badge: "Increment",
+      action: "AdviceRequest",
+      postId:  postId,
+      friendName:request.params.searchObjectPost
+    };
+  };
+};
+var createAskAdviceNews = function(votes, userPointer, post) {
+  var VoteNews = Parse.Object.extend("VoteNews");
+  var voteNews = new VoteNews();
+  console.log("post " + post)
+  console.log("user "+ userPointer)
+  //Need to create Parse user and post pointer objects
+  voteNews.set({
+    votes: votes, 
+    viewed: false,
+    user_id: userPointer,
+    post_id: post
+  });
+  voteNews.save();
+};
 
 
 

@@ -22,6 +22,8 @@ function pointerTo(objectId, klass) {
   return { __type:"Pointer", className:klass, objectId:objectId };
 }
 
+// JSON.stringify()
+
 Parse.Cloud.define("deletePost", function(request, response) {
   Parse.Cloud.useMasterKey();
   var postId=request.params.postId;
