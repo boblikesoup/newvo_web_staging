@@ -3,7 +3,7 @@ require('cloud/api/flagging.js');
 require('cloud/api/suggestions.js');
 require('cloud/api/post-querying.js');
 require('cloud/api/favorites.js');
-// require('cloud/api/newsfeed.js');
+require('cloud/api/newsfeed.js');
 
 // Test if API is working
 // Parse.Cloud.define("hello", function(request, response) {
