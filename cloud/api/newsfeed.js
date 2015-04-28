@@ -48,11 +48,6 @@ var createAskAdviceNews = function(taggedUsersIds, user, taggingUserName, post) 
   console.log(caption);
   for (var i = 0; i < taggedUsersIds.length; i++) {
     var taggedUserPointer = { "__type":"Pointer", "className":"_User", "objectId":taggedUsersIds[i] };
-    console.log("taggedUserPointer " + JSON.stringify(taggedUserPointer))
-    console.log("post " + JSON.stringify(post))
-    console.log("tagged suer " + JSON.stringify(user))
-    console.log("caption " + JSON.stringify(caption))
-
     var AskAdviceNews = Parse.Object.extend("AskAdviceNews");
     var askAdviceNews = new AskAdviceNews();
     askAdviceNews.set({ 
@@ -63,6 +58,5 @@ var createAskAdviceNews = function(taggedUsersIds, user, taggingUserName, post) 
       caption: caption
     });
     askAdviceNews.save();
-    console.log("askAdviceNews after save" + askAdviceNews)
   };
 };

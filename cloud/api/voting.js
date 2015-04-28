@@ -55,19 +55,36 @@ var voteNewsPush = function(votes, userId, postId) {
     }
   });
 };
-// UPDATES IF EXISTS AND RESETS VIEWED OR NEW EACH TIME?
 var createUpdateVoteNews = function(votes, userPointer, post) {
-  var caption = "Your post got " + votes + " votes."
   var VoteNews = Parse.Object.extend("VoteNews");
-  var voteNews = new VoteNews();
-  voteNews.set({
-    votes: votes, 
-    viewed: false,
-    user_id: userPointer,
-    post_id: post,
-    caption: caption
+  var voteNewsQuery = new Parse.Query(VoteNews);
+  voteNewsQuery.equalTo("user_id", userPointer);
+  voteNewsQuery.equalTo("post_id", post);
+  voteNewsQuery.first({
+    success: function(voteNews) {
+      var caption = "Your post got " + votes + " votes."
+      if (voteNews != undefined) {
+        voteNews.set({
+          votes: votes, 
+          viewed: false,
+          caption: caption
+        });
+      }
+      else {
+        var VoteNews = Parse.Object.extend("VoteNews");
+        var voteNews = new VoteNews();
+        voteNews.set({
+          votes: votes, 
+          viewed: false,
+          user_id: userPointer,
+          post_id: post,
+          caption: caption
+        });
+      };
+      voteNews.save();
+    }
   });
-  voteNews.save();
+
 };
 
 // Old code.  Missing 200 vote notification
