@@ -18,8 +18,7 @@ Parse.Cloud.define("unfavorite", function(request, response) {
 // Fetch news (only new that certain installations haven't seen?)
 // use the .include() parameter on Parse.Query to specify which pointers should be included as full objects in the query result set.
 
-// “Someone has a new suggestion for your look” (profile pic if was a friend you tagged, else letter)
-  // create SuggestionNews ()
+// "Your post has X new Votes"
 // “X has left a suggestion on your look” -Their profile pic
   // create SuggestionNews with friend
 // “X needs your advice.” - Friend profile pic

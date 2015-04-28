@@ -22,10 +22,8 @@ Parse.Cloud.afterSave("Vote", function(request) {
         var userQuery = new Parse.Query(User);
         userQuery.get( userPointer.id, {
           success: function(user) {
-            var voteNewsPush = user.get("vote_news_push");
-            console.log("VOTE NEWS PUSH NON EXISTING = " + voteNewsPush);
-            if (voteNewsPush != false) {
-              console.log("USER SHOULD RECEIVE VOTE NEWS");
+            var voteNewsPushPermission = user.get("push_vote_news");
+            if (voteNewsPushPermission != false) {
               voteNewsPush(votes, userPointer.id, JSON.stringify(post));
             };
           }
@@ -44,7 +42,7 @@ var voteNewsPush = function(votes, userId, postId) {
     titleCaption = "Wow, your post got " + votes + " votes!";
     alertCaption = "Wow, your post got " + votes + " votes on NewVo!";
   }
-  installationQuery = new Parse.Query(Parse.Installation);
+  var installationQuery = new Parse.Query(Parse.Installation);
   installationQuery.equalTo("publicId", userId);
   Parse.Push.send({
     where: installationQuery,
