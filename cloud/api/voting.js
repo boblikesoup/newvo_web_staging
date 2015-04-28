@@ -18,12 +18,20 @@ Parse.Cloud.afterSave("Vote", function(request) {
       post.save();
       votes = post.get("voted_on_array").length;
       if (votes === 3 || votes === 10 || votes === 50 || votes === 100 || votes === 200) {
-        voteNewsPush(votes, userPointer.id, JSON.stringify(post));
+        var User = Parse.Object.extend("User");
+        var userQuery = new Parse.Query(User);
+        userQuery.get( userPointer.id, {
+          success: function(user) {
+            var voteNewsPush = user.get("vote_news_push");
+            console.log("VOTE NEWS PUSH NON EXISTING = " + voteNewsPush);
+            if (voteNewsPush != false) {
+              console.log("USER SHOULD RECEIVE VOTE NEWS");
+              voteNewsPush(votes, userPointer.id, JSON.stringify(post));
+            };
+          }
+        });
         createUpdateVoteNews(votes, userPointer, post);
       };
-    },
-    error: function(error) {
-      console.error("Got an error " + error.code + " : " + error.message);
     }
   });
 });

@@ -18,8 +18,8 @@ Parse.Cloud.afterSave("Post", function(request) {
     userQuery.get( userId, {
       success: function(user) {
         console.log("got user " + JSON.stringify(user));
-        // askAdvicePush(taggedUserIds, post);
         // createAskAdviceNews(taggedUsers, userPointer, post.id);
+        // askAdvicePush(taggedUserIds, post);
       }
     });
   };
