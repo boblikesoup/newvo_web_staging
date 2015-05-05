@@ -29,20 +29,6 @@ var decrimentSuggestions = function(request, response, suggestion) {
   });
 };
 
-// Increments post.suggestions
-Parse.Cloud.afterSave("Suggestion", function(request) {
-  Parse.Cloud.useMasterKey();
-  postQuery = new Parse.Query("Post");
-  postQuery.get(request.object.get("post_id").id, {
-    success: function(post) {
-      post.increment("suggestions");
-      post.save();
-    },
-    error: function(error) {
-      console.error("ERROR: " + error.code + " : " + error.message);
-    }
-  });
-});
 
 Parse.Cloud.job("suggestionCounter", function(request, status) {
   Parse.Cloud.useMasterKey();

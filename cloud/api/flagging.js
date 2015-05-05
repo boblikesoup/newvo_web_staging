@@ -1,18 +1,16 @@
-var badPost, createPostFlag, getPost, getPostOwner, getUser, miscategorizedPost;
-// Adjust to accept user object instead of hardcoded
-
-// curl -X POST \
+ // curl -X POST \
 //   -H "X-Parse-Application-Id: Q18jrhbRAM2DElR8yiRXyEbPGHM9RTEWA0zu2Gyq" \
 //   -H "X-Parse-REST-API-Key: 4Nq3vepmYNmki59CMPQ5SgKegmPek6wLMQ17tSi6" \
 //   -H "Content-Type: application/json" \
 //   -d '{"postId": "nP8NWmi0ul", "reason": 3}' \
 //   https://api.parse.com/1/functions/flagPost
 
+// Adjust to accept user object instead of hardcoded.  Edit to be an afterSave
 Parse.Cloud.define("flagPost", function(request, response) {
   Parse.Cloud.useMasterKey();
   getPost(request, response);
 });
-getPost = function(request, response) {
+var getPost = function(request, response) {
   var postQuery = new Parse.Query("Post");
   postQuery.get(request.params.postId, {
     success: function(post) {
@@ -23,7 +21,7 @@ getPost = function(request, response) {
     }
   });
 };
-fetchPostOwner = function(request, response, post) {
+var fetchPostOwner = function(request, response, post) {
   var postOwnerPointer = post.get("user_id");
   postOwnerPointer.fetch({
     success: function(postOwner) {
@@ -34,7 +32,7 @@ fetchPostOwner = function(request, response, post) {
     }
   });
 };
-createPostFlag = function(request, response, postOwner, post) {
+var createPostFlag = function(request, response, postOwner, post) {
   var PostFlag = Parse.Object.extend("PostFlag");
   var postFlag = new PostFlag();
   postFlag.set({
@@ -58,7 +56,7 @@ createPostFlag = function(request, response, postOwner, post) {
     }
   });
 };
-badPost = function(request, response, post) {
+var badPost = function(request, response, post) {
   post.increment("flags");
   post.addUnique("voted_on_array", request.user.id);
   if (post.get("flags") > 3) {
@@ -67,7 +65,7 @@ badPost = function(request, response, post) {
   post.save();
   response.success("Flagged bad post.");
 };
-miscategorizedPost = function(response, post, postFlag, reason) {
+var miscategorizedPost = function(response, post, postFlag, reason) {
   if (reason === 3) {
     post.increment("styleFlags");
     post.category = 0;

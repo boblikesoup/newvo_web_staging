@@ -1,4 +1,13 @@
-// Sends push notifications when posts receive 3,10,50,100,200 votes
+// curl -X POST \
+// -H "X-Parse-Application-Id: Q18jrhbRAM2DElR8yiRXyEbPGHM9RTEWA0zu2Gyq" \
+// -H "X-Parse-REST-API-Key: 4Nq3vepmYNmki59CMPQ5SgKegmPek6wLMQ17tSi6" \
+// -H "Content-Type: application/json" \
+// -d '{"user_id": {"__type": "Pointer", "className": "_User", "objectId": "sHUBJBqtXN"},
+//   "post_id":{"__type": "Pointer", "className": "Post", "objectId": "nP8NWmi0ul"}, 
+//     "vote": 1}' \
+// https://api.parse.com/1/classes/Vote
+
+// Creates news and sends push notifications when posts receive 3,10,50,100,200 votes
 Parse.Cloud.afterSave("Vote", function(request) {
   Parse.Cloud.useMasterKey();
   var postQuery = new Parse.Query("Post");
