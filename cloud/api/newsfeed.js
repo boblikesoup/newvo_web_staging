@@ -5,6 +5,8 @@
 // -d '{"user_id":  {"__type":"Pointer", "className": "_User", "objectId":"dPYDIVvhHD"}, "post_id": {"__type": "Pointer", "className": "Post", "objectId": "nP8NWmi0ul"}}' \
 // https://api.parse.com/1/classes/Suggestion
 
+// Need to check if FB friends
+
 // Increment suggestion counter + push & news
 Parse.Cloud.afterSave("Suggestion", function(request) {
   Parse.Cloud.useMasterKey();
@@ -19,8 +21,6 @@ Parse.Cloud.afterSave("Suggestion", function(request) {
       post.save();
       var postCreator = post.get("user_id");
       var suggester = suggestion.get("user_id");
-      //Get same ID here
-      console.log("suggester " + suggester.id + " creator " + postCreator.id)
       if (suggester.id != postCreator.id) {
         createSuggestionNews(postCreator, postId, suggestion);
       }
@@ -33,6 +33,7 @@ var createSuggestionNews = function(postCreator, postId, suggestion) {
   var suggestionCreatorQuery = new Parse.Query(SuggestionCreator);
   suggestionCreatorQuery.get( suggestionCreatorId, {
     success: function(suggestionCreator) {
+      
       // FB API request for friends of postCreator
       // Check if facebook_id of suggestionCreator is in array of friendIds
       // if (friends) {
@@ -52,7 +53,6 @@ var createSuggestionNews = function(postCreator, postId, suggestion) {
         suggester_id: suggestionCreator,
         caption: caption
       });
-      console.log("suggestion NEWS ! ~~~~~" + JSON.stringify(suggestionNews))
       suggestionNews.save();
       var suggestionPushPermission = postCreator.get("push_suggestion_news");
       if (suggestionPushPermission != false) {

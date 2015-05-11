@@ -75,15 +75,3 @@ createUpdateVoteNews = (votes, user, post) ->
   voteNews.save()
 
 
-
-  # voteNewsQuery = new Parse.Query("VoteNews")
-  # voteNewsQuery.equalTo("user_id", user)
-  # voteNewsQuery.equalTo("post_id", post)
-  # # user and post
-  # voteNewsQuery.first().find()
-  #   success: (voteNews) ->
-  #     # If exists set "viewed" to False
-  #   # Else create VoteNews
-
-
-

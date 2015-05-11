@@ -5,17 +5,6 @@ require('cloud/api/post-querying.js');
 require('cloud/api/favorites.js');
 require('cloud/api/newsfeed.js');
 
-// Test if API is working
-// Parse.Cloud.define("hello", function(request, response) {
-//   response.success("Hello world!");
-// });
-
-// curl -X POST \
-//   -H "X-Parse-Application-Id: Q18jrhbRAM2DElR8yiRXyEbPGHM9RTEWA0zu2Gyq" \
-//   -H "X-Parse-REST-API-Key: 4Nq3vepmYNmki59CMPQ5SgKegmPek6wLMQ17tSi6" \
-//   -H "Content-Type: application/json" \
-//   -d '{}' \
-//   https://api.parse.com/1/functions/hello
 
 // return a pointer to an object with a given id and given class
 function pointerTo(objectId, klass) {
