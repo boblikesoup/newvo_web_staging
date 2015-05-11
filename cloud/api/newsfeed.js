@@ -17,29 +17,54 @@ Parse.Cloud.afterSave("Suggestion", function(request) {
     success: function(post) {
       post.increment("suggestions");
       post.save();
-      postCreator = post.get("user_id");
-      var suggestionPushPermission = postCreator.get("push_suggestion_news");
-      if (suggestionPushPermission != false) {
-        suggestionPush(postCreator, postId, suggestion);
+      var postCreator = post.get("user_id");
+      var suggester = suggestion.get("user_id");
+      //Get same ID here
+      console.log("suggester " + suggester.id + " creator " + postCreator.id)
+      if (suggester.id != postCreator.id) {
+        createSuggestionNews(postCreator, postId, suggestion);
       }
-      // createAskAdviceNews(taggedUserIds, user, taggingUserName, post);
-      console.log("POST CREATORSSDSDSD  " + JSON.stringify(postCreator));
     }
   });
 });
+var createSuggestionNews = function(postCreator, postId, suggestion) {
+  suggestionCreatorId = suggestion.get("user_id").id;
+  var SuggestionCreator = Parse.Object.extend("User");
+  var suggestionCreatorQuery = new Parse.Query(SuggestionCreator);
+  suggestionCreatorQuery.get( suggestionCreatorId, {
+    success: function(suggestionCreator) {
+      // FB API request for friends of postCreator
+      // Check if facebook_id of suggestionCreator is in array of friendIds
+      // if (friends) {
+      //   var caption = "Your friend " + suggestionCreator.get("public_name") + " left a comment on your post."
+      // }
+      // else {
+      //   var caption = "Someone left a comment on your post."
+      // }
+      var caption = "Ima filler"
+      var postPointer = {"__type": "Pointer", "className": "Post", "objectId": postId}
+      var SuggestionNews = Parse.Object.extend("SuggestionNews");
+      var suggestionNews = new SuggestionNews();
+      suggestionNews.set({ 
+        viewed: false,
+        user_id: postCreator,
+        post_id: postPointer,
+        suggester_id: suggestionCreator,
+        caption: caption
+      });
+      console.log("suggestion NEWS ! ~~~~~" + JSON.stringify(suggestionNews))
+      suggestionNews.save();
+      var suggestionPushPermission = postCreator.get("push_suggestion_news");
+      if (suggestionPushPermission != false) {
+          suggestionPush(postCreator.id, postId, caption);
+      };
 
-var suggestionPush = function(postCreator, postId, suggestion) {
-  // Search suggestionCreator
-  // FB API request for friends of postCreator
-    // Check if facebook_id of suggestionCreator is in array of friendIds
-  if (friends) {
-    var caption = "Your friend " + suggestionCreator.get("public_name") + " left a comment on your post."
-  }
-  else {
-    var caption = "Someone left a comment on your post."
-  }
+    }
+  });
+};
+var suggestionPush = function(postCreatorId, postId, caption) {
   var installationQuery = new Parse.Query(Parse.Installation);
-  installationQuery.equalTo("publicId", postCreator.id);
+  installationQuery.equalTo("publicId", postCreatorId);
   Parse.Push.send({
     where: installationQuery,
     data: {
@@ -47,7 +72,7 @@ var suggestionPush = function(postCreator, postId, suggestion) {
       alert: caption,
       badge: "Increment",
       action: "SuggestionNotification",
-      postId:  postId,
+      postId:  postId
     }
   });
 };
@@ -99,7 +124,6 @@ var askAdvicePush = function(taggingUserName, taggedUserIds, postId) {
 };
 var createAskAdviceNews = function(taggedUsersIds, user, taggingUserName, post) {
   var caption = taggingUserName + " asked for your advice.";
-  console.log(caption);
   for (var i = 0; i < taggedUsersIds.length; i++) {
     var taggedUserPointer = { "__type":"Pointer", "className":"_User", "objectId":taggedUsersIds[i] };
     var AskAdviceNews = Parse.Object.extend("AskAdviceNews");
